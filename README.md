@@ -1,6 +1,4 @@
-
- 
-Version1_Classfication.ipynb # MSU_2019
+# MSU_2019
 Copyright Debora Mroczek 2019
 University of Houston / Michigan State University REU
 
