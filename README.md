@@ -2,7 +2,7 @@
 Copyright Debora Mroczek 2019
 University of Houston / Michigan State University REU
 
-Last uptaded: Jun 18, 2019
+Last updated: Jun 18, 2019
 
 This repo contains the work done during my REU program at Michigan State University in 2019. Advisor: Morten Hjorth-Jensen. Co-advisor: Scott Boggner. 
 
