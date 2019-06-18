@@ -2,7 +2,7 @@
 # coding: utf-8
 
 
-import tensorflow.keras as keras
+from tensorflow.python import keras
 import tensorflow as tf
 import os
 import pandas as pd
@@ -55,13 +55,13 @@ press_acceptable_test = pd.read_csv(infile,sep = '\t',names = ('T','muB','P'))
 
 #Import training files and define Pandas data frame
 
-for i in range(1,len(Names_Pathological)-1):
+for i in range(1,len(Names_Pathological)):
     infile = open(pathological_path(Names_Pathological[i]),'r')
     Press = pd.read_csv(infile,sep = '\t',names = ('T','muB','P'))
     press_pathological =press_pathological.append(pd.DataFrame(Press))
     
 
-for i in range(1,len(Names_Acceptable)-1):
+for i in range(1,len(Names_Acceptable)):
     infile = open(acceptable_path(Names_Acceptable[i]),'r')
     Press = pd.read_csv(infile,sep = '\t',names = ('T','muB','P'))
     press_acceptable =press_acceptable.append(pd.DataFrame(Press))
@@ -180,8 +180,7 @@ for j in range(0,len(scalled_matpress_test)):
     
 #Correction to training data missing element
 
-x_train[45] = np.append(x_train[45], x_train[45][:][768])
-
+x_train[45] = np.delete(x_train[45], x_train[45][:][768])
 
 #Now we normalize the training and test data for the neural network
 
