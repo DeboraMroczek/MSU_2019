@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-
 from tensorflow.python import keras
 import tensorflow as tf
 import os
@@ -196,7 +195,7 @@ classification_test = array(classification_test)
 
 
 model = tf.keras.models.Sequential()
-model.add(tf.keras.layers.Flatten())
+model.add(tf.keras.layers.Flatten(),input_shape=(770,))
 model.add(tf.keras.layers.Dense(770, activation = tf.nn.relu))
 model.add(tf.keras.layers.Dense(200, activation = tf.nn.relu))
 model.add(tf.keras.layers.Dense(1, activation = tf.nn.sigmoid))
@@ -205,6 +204,9 @@ model.compile(optimizer='adam',
              loss = 'binary_crossentropy',
              metrics=['accuracy'])
 model.fit(x_train, classification, epochs = 20)
+
+#save model
+model.save('Thermodynamics_Classifier.model')
 
 # Out of sample testing
 
