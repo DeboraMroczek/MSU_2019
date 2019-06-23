@@ -12,7 +12,7 @@ from sklearn import preprocessing
 from itertools import chain
 
 #Define path for data set
-DATA_ID = "01_grid/"
+DATA_ID = "01_grid"
 
 
 #Define T-muB grid size
@@ -27,7 +27,15 @@ def data_path(filename):
 
 
 #Name of the folder for training sets
-Names_Data = os.listdir('01_grid')
+# Names_Data = os.listdir("01_grid") - Can be used but doesn't prevent hidden files such as .DS_store from being imported which WILL crash the code
+
+#this format prevents that from happening by ensuring the file has the correct format
+Names_Data = []
+
+for item in os.listdir(DATA_ID):
+    if not item.startswith('.') and os.path.isfile(os.path.join(DATA_ID, item)):
+        Names_Data.append(item)
+
 
 Name_Elements = []
 for i in range (0,len(Names_Data)):
@@ -35,9 +43,10 @@ for i in range (0,len(Names_Data)):
 
 w = []
 rho = []
-for i in range(0,len(Name_Elements)):
-    w.append([float("{0:.1f}".format(float(Name_Elements[i][7])/float(Name_Elements[i][4])))])
-    rho.append([float("{0:.1f}".format(float(Name_Elements[i][8])/float(Name_Elements[i][7])))])  
+
+for i in range(0, len(Name_Elements)):
+    w.append([float("{0:.4f}".format(float(Name_Elements[i][7])/float(Name_Elements[i][4])))])
+    rho.append([float("{0:.4f}".format(float(Name_Elements[i][8])/float(Name_Elements[i][7])))])  
 
 
 
@@ -78,6 +87,7 @@ for i in range(0,int(len(press_data)/347721)):
         matpress.append(data)
     print (i,'/',len(Names_Data), end="\r")
     
+del press_data
 
 print('* Matrices created successfully - Scalling data *')   
 
@@ -93,7 +103,7 @@ for i in range(0, len(matpress)):
         scalled_matpress.append(preprocessing.scale(matpress[i].T).T)
     print (i,'/',len(matpress), end="\r")
       
-
+del matpress
 
 
 # Compute SVD and first coefficient 
@@ -118,7 +128,8 @@ for j in range(0,len(scalled_matpress)):
 
 
 print('* PCA computed successfully *')
-    
+
+del scalled_matpress    
 
 #Now we normalize the training and test data for the neural network
 print('* Normalizing data and calling the model *')
@@ -150,7 +161,31 @@ flattened_pathological_rho = [val for sublist in list_pathological_rho for val i
 flattened_acceptable_w = [val for sublist in list_acceptable_w for val in sublist]
 flattened_acceptable_rho = [val for sublist in list_acceptable_rho for val in sublist]
 
+with open('pathological_w.dat', 'w') as f:
+    for item in flattened_pathological_w:
+        f.write("%f\n" % item)
 
+f.close()
+
+with open('pathological_rho.dat', 'w') as f:
+    for item in flattened_pathological_rho:
+        f.write("%f\n" % item)
+
+f.close()
+
+with open('acceptable_w.dat', 'w') as f:
+    for item in flattened_acceptable_w:
+        f.write("%f\n" % item)
+
+f.close()
+
+with open('acceptable_rho.dat', 'w') as f:
+    for item in flattened_acceptable_rho:
+        f.write("%f\n" % item)
+
+f.close()
+
+print(len(flattened_pathological_w)+len(flattened_acceptable_w))
 plt.plot(flattened_pathological_w, flattened_pathological_rho, 'ro', flattened_acceptable_w, flattened_acceptable_rho, 'bs')
 plt.axis([0, 2, 0, 4])
 plt.savefig('w_rho.pdf')
