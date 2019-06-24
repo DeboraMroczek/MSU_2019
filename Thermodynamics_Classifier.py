@@ -10,6 +10,7 @@ from numpy import reshape
 from numpy import array
 from sklearn import preprocessing
 from itertools import chain
+import math
 
 #Define path for data set
 DATA_ID = "01_grid"
@@ -25,6 +26,9 @@ muBsize = 451
 def data_path(filename):
     return os.path.join(DATA_ID, filename)
 
+def round_half_up(n, decimals=0):
+    multiplier = 10 ** decimals
+    return math.floor(n*multiplier + 0.5) / multiplier
 
 #Name of the folder for training sets
 # Names_Data = os.listdir("01_grid") - Can be used but doesn't prevent hidden files such as .DS_store from being imported which WILL crash the code
@@ -46,9 +50,7 @@ rho = []
 
 for i in range(0, len(Name_Elements)):
     w.append([float("{0:.4f}".format(float(Name_Elements[i][7])/float(Name_Elements[i][4])))])
-    rho.append([float("{0:.4f}".format(float(Name_Elements[i][8])/float(Name_Elements[i][7])))])  
-
-
+    rho.append([float("{0:.4f}".format(float(Name_Elements[i][8])/float(Name_Elements[i][7])))]) 
 
 #Open first file and define pandas data frame 
 infile = open(data_path(Names_Data[0]),'r')
@@ -163,32 +165,39 @@ flattened_acceptable_rho = [val for sublist in list_acceptable_rho for val in su
 
 with open('pathological_w.dat', 'w') as f:
     for item in flattened_pathological_w:
-        f.write("%f\n" % item)
+        val = round_half_up(item,1)
+        if val == 0.0:
+            val = 0.1
+        f.write("%f\n" % val)
 
 f.close()
 
 with open('pathological_rho.dat', 'w') as f:
     for item in flattened_pathological_rho:
-        f.write("%f\n" % item)
+        val = round_half_up(item,1)
+        if val == 0.0:
+            val = 0.1
+        f.write("%f\n" % val)
 
 f.close()
 
 with open('acceptable_w.dat', 'w') as f:
     for item in flattened_acceptable_w:
-        f.write("%f\n" % item)
+        val = round_half_up(item,1)
+        if val == 0.0:
+            val = 0.1
+        f.write("%f\n" % val)
 
 f.close()
 
 with open('acceptable_rho.dat', 'w') as f:
     for item in flattened_acceptable_rho:
-        f.write("%f\n" % item)
+        val = round_half_up(item,1)
+        if val == 0.0:
+            val = 0.1
+        f.write("%f\n" % val)
 
 f.close()
-
-print(len(flattened_pathological_w)+len(flattened_acceptable_w))
-plt.plot(flattened_pathological_w, flattened_pathological_rho, 'ro', flattened_acceptable_w, flattened_acceptable_rho, 'bs')
-plt.axis([0, 2, 0, 4])
-plt.savefig('w_rho.pdf')
 
 
 
