@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
 
 
 	/* Parameters are read from the file parameters.dat*/
-  	FILE *ParametersIn = fopen(argv[1], "r");
+  	FILE *ParametersIn = fopen("parameters.dat", "r");
   	if (ParametersIn == 0){
   		fprintf(stderr,"failed to open paremeters file\n");
   		exit(1);
@@ -251,7 +251,8 @@ int main(int argc, char *argv[])
 	dmuBC = dTC*rho;
 
 	/* Determine the filenames according to the parameter choice made. */
-	sprintf(nameFolder, "Files_%s_%d_%d_%d_%d_%d_%d",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
+	//sprintf(nameFolder, "Files_%s_%d_%d_%d_%d_%d_%d",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
+	sprintf(nameFolder, "Files_%s", argv[1]);
 	sprintf(nameCoords, "Coords_%s_%d_%d_%d_%d_%d_%d.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
 	sprintf(nameChisIsing, "Chis_Ising_%s_%d_%d_%d_%d_%d_%d_muB0.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
 	sprintf(nameChisNoIsing, "Chis_No_Ising_%s_%d_%d_%d_%d_%d_%d_muB0.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
@@ -287,8 +288,8 @@ int main(int argc, char *argv[])
 	sprintf(nameBarDensFinal3D, "BarDens_Final_%s_%d_%d_%d_%d_%d_%d_3D.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
 	sprintf(nameEnerDensFinal3D, "EnerDens_Final_%s_%d_%d_%d_%d_%d_%d_3D.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
 	sprintf(nameSpsoundFinal3D, "SpSound_Final_%s_%d_%d_%d_%d_%d_%d_3D.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
-	sprintf(nameChi2Final3D, "Chi2_Final_%s_%d_%d_%d_%d_%d_%d_3D.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
-	sprintf(nameChi4Final3D, "Chi4_Final_%s_%d_%d_%d_%d_%d_%d_3D.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
+	sprintf(nameChi2Final3D, "Chi2_Final_3D.dat");
+	sprintf(nameChi4Final3D, "Chi4_Final_3D.dat");
 
 
 	/* Create folder with filename, and move to the folder.*/
@@ -723,11 +724,12 @@ int main(int argc, char *argv[])
 	/* Now all the derivatives have been merged with the HRG, we can finish with the thermodynamics and export the quantities we want,
 			in particular we will normalize with suitable powers of the temperature to obtain dimensionless quantities.*/
 	printf("\nMerging with HRG complete. \n \nCalculating thermodynamics quantities. \n");
-		FILE *FilePressFinal = fopen(namePressFinal3D, "w");			
+		//FILE *FilePressFinal = fopen(namePressFinal3D, "w");			
 		//FILE *FileEntrFinal = fopen(nameEntrFinal3D, "w");
 	//	FILE *FileBarDensFinal = fopen(nameBarDensFinal3D, "w");		FILE *FileEnerDensFinal = fopen(nameEnerDensFinal3D, "w");
-	/*	FILE *FileSpSoundFinal = fopen(nameSpsoundFinal3D, "w");*/		//FILE *FileChi2Final = fopen(nameChi2Final3D, "w");
-		//FILE *FileChi4Final = fopen(nameChi4Final3D, "w");
+	/*	FILE *FileSpSoundFinal = fopen(nameSpsoundFinal3D, "w");*/		
+		FILE *FileChi2Final = fopen(nameChi2Final3D, "w");
+		FILE *FileChi4Final = fopen(nameChi4Final3D, "w");
 	for (i=30; i<=800; i++){
 	    for(j=0;j<=450; j++){
 		    Tval = (double) i;
@@ -735,7 +737,7 @@ int main(int argc, char *argv[])
 		   	if(muBval == 0) cure=0.0;
 		    else cure=1.0;
 
-			PressFinalMat[i][j] = PressTotHRGMat[i][j]/pow(Tval,4);
+			//PressFinalMat[i][j] = PressTotHRGMat[i][j]/pow(Tval,4);
 			//EntropyFinalMat[i][j] = dPressTotHRGdTMat[i][j]/pow(Tval,3);
 			//BarDensityFinalMat[i][j] = (dPressTotHRGdmuBMat[i][j]/pow(Tval,3))*cure;
 			//EnerDensityFinalMat[i][j] = (dPressTotHRGdTMat[i][j]*Tval - PressTotHRGMat[i][j] + muBval*dPressTotHRGdmuBMat[i][j])/pow(Tval,4);
@@ -745,22 +747,22 @@ int main(int argc, char *argv[])
     								*1.0/(dPressTotHRGdTMat[i][j]*Tval + muBval*dPressTotHRGdmuBMat[i][j])
     								*1.0/(d2PressTotHRGdT2Mat[i][j]*d2PressTotHRGdmuB2Mat[i][j]-d2PressTotHRGdTdmuBMat[i][j]
     								*d2PressTotHRGdTdmuBMat[i][j]); */    								
-			// Chi2FinalMat[i][j] = d2PressTotHRGdmuB2Mat[i][j]/pow(Tval,2);
-			//Chi4FinalMat[i][j] = d4PressTotHRGdmuB4Mat[i][j];
+			 Chi2FinalMat[i][j] = d2PressTotHRGdmuB2Mat[i][j]/pow(Tval,2);
+			 Chi4FinalMat[i][j] = d4PressTotHRGdmuB4Mat[i][j];
 
-	     	fprintf(FilePressFinal,"%3.16f	%3.1f	%12.16f \n", muBval, Tval, PressFinalMat[i][j]);
+	     	//fprintf(FilePressFinal,"%3.16f	%3.1f	%12.16f \n", muBval, Tval, PressFinalMat[i][j]);
 	     //	fprintf(FileEntrFinal,"%3.16f	%3.1f	%12.16f \n", muBval, Tval, EntropyFinalMat[i][j]);
 	     //	fprintf(FileBarDensFinal,"%3.16f	%3.1f	%12.16f \n", muBval, Tval, BarDensityFinalMat[i][j]);
 	     //	fprintf(FileEnerDensFinal,"%3.16f	%3.1f	%12.16f \n", muBval, Tval, EnerDensityFinalMat[i][j]);
 	     //	  	fprintf(FileSpSoundFinal,"%3.16f	%3.1f	%12.16f \n", muBval, Tval, SpSoundFinalMat[i][j]);
-			//	fprintf(FileChi2Final,"%3.16f	%3.1f	%12.16f \n", muBval, Tval, Chi2FinalMat[i][j]);
-			//	fprintf(FileChi4Final,"%3.16f	%3.1f	%12.16f \n", muBval, Tval, Chi4FinalMat[i][j]);
+			fprintf(FileChi2Final,"%3.16f	%3.1f	%12.16f \n", muBval, Tval, Chi2FinalMat[i][j]);
+			fprintf(FileChi4Final,"%3.16f	%3.1f	%12.16f \n", muBval, Tval, Chi4FinalMat[i][j]);
     	}
 	}
-	fclose(FilePressFinal);		
+	//fclose(FilePressFinal);		
 	//	fclose(FileEntrFinal);			fclose(FileBarDensFinal);
 	//fclose(FileEnerDensFinal);		fclose(FileSpSoundFinal);	
-	//fclose(FileChi2Final);		fclose(FileChi4Final);
+	fclose(FileChi2Final);		fclose(FileChi4Final);
 
 	printf("\nProcedure completed.\n");
 
