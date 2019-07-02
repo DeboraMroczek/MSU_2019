@@ -76,7 +76,7 @@ for i in range(0,len(lhs_samples_mat)):
     subprocess.call('./EOS', stdout=devnull, stderr=devnull)
     devnull.close()
 
-
+    #NEXT STEP - Call files from each folder, define ksig^2 = chi4/chi^2
 
 
 

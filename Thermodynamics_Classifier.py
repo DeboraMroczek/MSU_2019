@@ -13,7 +13,7 @@ from itertools import chain
 import math
 
 #Define path for data set
-DATA_ID = "01_grid"
+DATA_ID = "muBC350_01grid"
 
 
 #Define T-muB grid size
@@ -49,8 +49,8 @@ w = []
 rho = []
 
 for i in range(0, len(Name_Elements)):
-    w.append([float("{0:.4f}".format(float(Name_Elements[i][7])/float(Name_Elements[i][4])))])
-    rho.append([float("{0:.4f}".format(float(Name_Elements[i][8])/float(Name_Elements[i][7])))]) 
+    w.append([float("{0:.4f}".format(float(Name_Elements[i][7])/100.0))])
+    rho.append([float("{0:.4f}".format(float(Name_Elements[i][8])/100.0))]) 
 
 #Open first file and define pandas data frame 
 infile = open(data_path(Names_Data[0]),'r')

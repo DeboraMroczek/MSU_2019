@@ -195,9 +195,9 @@ classification_test = array(classification_test)
 
 
 model = tf.keras.models.Sequential()
-model.add(tf.keras.layers.Flatten(),input_shape=(770,))
+model.add(tf.keras.layers.Flatten())
 model.add(tf.keras.layers.Dense(770, activation = tf.nn.relu))
-model.add(tf.keras.layers.Dense(200, activation = tf.nn.relu))
+model.add(tf.keras.layers.Dense(40, activation = tf.nn.relu))
 model.add(tf.keras.layers.Dense(1, activation = tf.nn.sigmoid))
 
 model.compile(optimizer='adam',
