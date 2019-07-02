@@ -247,13 +247,13 @@ int main(int argc, char *argv[])
   	/* If the choice was not LAT, move on.*/
 
 	/* Determine dTC and dmuBC from TC, muBC, ww and rho. */
-	dTC = ww*TC; 
-	dmuBC = dTC*rho;
+	dTC = ww*100; 
+	dmuBC = 100*rho;
 
 	/* Determine the filenames according to the parameter choice made. */
 	//sprintf(nameFolder, "Files_%s_%d_%d_%d_%d_%d_%d",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
 	sprintf(nameFolder, "Files_%s", argv[1]);
-	sprintf(nameCoords, "Coords_%s_%d_%d_%d_%d_%d_%d.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
+	sprintf(nameCoords, "Coords_%s_%d_%d_%d_%d_%d_%d.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) ;
 	sprintf(nameChisIsing, "Chis_Ising_%s_%d_%d_%d_%d_%d_%d_muB0.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
 	sprintf(nameChisNoIsing, "Chis_No_Ising_%s_%d_%d_%d_%d_%d_%d_muB0.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
 	sprintf(namedChisNoIsingdT, "dChis_No_Ising_dT_%s_%d_%d_%d_%d_%d_%d_muB0.dat",MODESTR,(int)TC,(int)muBC,(int)angle1,(int)angle2,(int) dTC,(int) dmuBC);
